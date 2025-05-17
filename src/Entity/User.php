@@ -2,6 +2,7 @@
 // src/Entity/User.php
 namespace App\Entity;
 
+use App\Entity\Company;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -27,6 +28,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+    
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Company $company = null;
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fullName = null;
 
     public function getId(): ?int
     {
@@ -96,5 +103,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+    
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): static
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+    
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+    
+    public function setFullName(?string $fullName): static
+    {
+        $this->fullName = $fullName;
+        
+        return $this;
     }
 }

@@ -1,0 +1,85 @@
+{# templates/admin/zohocrm/connect.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Connect Zoho CRM{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="mb-0">Connect Zoho CRM</h1>
+                <div>
+                    <span class="me-2">Welcome, {{ user.fullName ?? user.email }}</span>
+                    <a href="{{ path('app_logout') }}" class="btn btn-outline-danger btn-sm">Logout</a>
+                </div>
+            </div>
+            <hr>
+            {% if user.company %}
+                <div class="text-muted small">
+                    Company: <strong>{{ user.company.name }}</strong>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="{{ path('admin_dashboard') }}" class="list-group-item list-group-item-action">
+                    Dashboard
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    Users
+                </a>
+                <a href="{{ path('admin_integrations') }}" class="list-group-item list-group-item-action active">
+                    Integrations
+                </a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Configure Zoho CRM Integration</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">
+                        To integrate with Zoho CRM, you need to provide your API credentials.
+                        <a href="https://api-console.zoho.com/" target="_blank" class="text-primary">
+                            Click here to create or find your Zoho CRM API credentials
+                        </a>.
+                    </p>
+                    
+                    {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.clientId) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.clientSecret) }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.apiToken) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.refreshToken) }}
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ path('admin_integrations') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Back to Integrations
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-link-45deg me-1"></i> Connect Zoho CRM
+                            </button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

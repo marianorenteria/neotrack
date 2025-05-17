@@ -1,0 +1,140 @@
+{# templates/admin/integrations.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Integrations{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="mb-0">Integrations</h1>
+                <div>
+                    <span class="me-2">Welcome, {{ user.fullName ?? user.email }}</span>
+                    <a href="{{ path('app_logout') }}" class="btn btn-outline-danger btn-sm">Logout</a>
+                </div>
+            </div>
+            <hr>
+            {% if user.company %}
+                <div class="text-muted small">
+                    Company: <strong>{{ user.company.name }}</strong>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="{{ path('admin_dashboard') }}" class="list-group-item list-group-item-action">
+                    Dashboard
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    Users
+                </a>
+                <a href="{{ path('admin_integrations') }}" class="list-group-item list-group-item-action active">
+                    Integrations
+                </a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Available Integrations</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">Connect your tools to enhance your workflow.</p>
+                    
+                    <div class="row">
+                        <!-- Zoho CRM Integration Card -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 border">
+                                <div class="card-header text-center bg-body">
+                                    Zoho CRM<span class="badge bg-primary float-end">New</span>
+                                </div>
+                                <div class="card-body text-center py-4">
+                                    <p class="card-text mb-4">Connect your Zoho CRM account to sync contacts and leads.</p>
+                                    
+                                    {% if zohoConnected %}
+                                        <div class="d-flex flex-column gap-2 align-items-center">
+                                            <a href="{{ path('admin_zohocrm_sync') }}" class="btn btn-success btn-lg d-flex align-items-center justify-content-center mx-auto" style="max-width: 250px;">
+                                                <i class="bi bi-arrow-repeat me-2"></i> Sync Now
+                                            </a>
+                                            <a href="{{ path('admin_zohocrm_disconnect') }}" class="btn btn-outline-danger d-flex align-items-center justify-content-center mx-auto" style="max-width: 250px;"
+                                               onclick="return confirm('Are you sure you want to disconnect Zoho CRM?');">
+                                                <i class="bi bi-x-circle me-2"></i> Disconnect
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <a href="{{ path('admin_zohocrm_connect') }}" class="btn btn-primary btn-lg d-flex align-items-center justify-content-center mx-auto" style="max-width: 250px;">
+                                            <i class="bi bi-link-45deg me-2"></i> Connect Zoho CRM
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <div class="card-footer bg-light text-center">
+                                    <div class="row">
+                                        <div class="col-6 border-end">
+                                            <small class="text-muted">Status</small>
+                                            <div>
+                                                {% if zohoConnected %}
+                                                    <span class="text-success">
+                                                        <i class="bi bi-check-circle me-1"></i> Connected
+                                                    </span>
+                                                {% else %}
+                                                    <span class="text-secondary">
+                                                        <i class="bi bi-dash-circle me-1"></i> Not connected
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted">Last Synced</small>
+                                            <div>
+                                                {% if zohoLastSynced %}
+                                                    <span class="text-info">
+                                                        {{ zohoLastSynced|date('M d, Y H:i') }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="text-secondary">Never</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Placeholder for future integrations -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 border">
+                                <div class="card-header bg-light">
+                                    <span class="badge bg-secondary float-end">Coming Soon</span>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <a href="#" class="btn btn-secondary disabled">Go somewhere</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
